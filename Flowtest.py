@@ -1,6 +1,14 @@
+import os
+import matplotlib
+
+# If no display is available (headless environment), use Agg backend and save output to file.
+if not os.environ.get('DISPLAY'):
+    matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
+from matplotlib.animation import PillowWriter
 from matplotlib.widgets import Button
 
 # --- Simple 2D flow simulation (particles moving rightward) ---
@@ -70,4 +78,12 @@ def update(frame):
     return scatter,
 
 anim = FuncAnimation(fig, update, interval=30, blit=False)
-plt.show()
+
+# If there is no display, save the animation to a GIF instead of showing a window.
+if not os.environ.get('DISPLAY'):
+    out_path = "flow.gif"
+    print(f"No DISPLAY detected; saving animation to {out_path} (this may take a moment)...")
+    anim.save(out_path, writer=PillowWriter(fps=20))
+    print(f"Saved: {out_path}")
+else:
+    plt.show()
