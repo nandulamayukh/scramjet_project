@@ -50,6 +50,6 @@ def update(frame):
     return (scat,)
 
 ani = FuncAnimation(fig, update, interval=30, blit=True)
-
+#abhinav abhinav abhinav
 # Keep window open until closed by user
 plt.show(block=True)
